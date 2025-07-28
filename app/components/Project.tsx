@@ -152,7 +152,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `Um ecossistema digital que usa tecnologia para cultivar esperança na agricultura moçambicana. Inclui um assistente IA (iAgroBot), recomendações inteligentes, comunidade agrícola e um marketplace de produtos locais. Visão: "Tecnologia que cultiva esperança."`,
         en: `A digital ecosystem using technology to foster hope in Mozambican agriculture. Includes an AI assistant (iAgroBot), smart recommendations, an agricultural community, and a local product marketplace. Vision: "Technology that cultivates hope."`,
       },
-      image: '', 
+      image: '/images/iagromoz.png', 
       technologies: [
         <GiFarmTractor key="iagromoz-icon" className="text-green-600" title="Agriculture" />,
         <SiPython key="python" className="text-blue-500" title="Python" />,
