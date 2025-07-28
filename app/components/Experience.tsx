@@ -40,7 +40,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({ darkMode, languag
       company: 'MozDevz',
       duration: 'Final do 2º Semestre do 2º Ano (Eng. Informática)', // Approximate duration
       description: `Tive meu primeiro contato com Python em um bootcamp da MozDevz, uma experiência que eu queria há muito tempo. A sintaxe do Python fluiu de forma natural, e saí de lá com dois certificados: um de participação e outro de mérito.`,
-      image: '/images/python-bootcamp-experience.png', // Placeholder image
+      image: '/images/mozdevz-python-bootcamp.png', // Placeholder image
     },
     {
       title: 'Coach no Django Girls Maxixe',

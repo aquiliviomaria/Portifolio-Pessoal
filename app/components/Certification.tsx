@@ -1,9 +1,8 @@
-// app/components/Certification.tsx
 'use client';
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaExternalLinkAlt } from 'react-icons/fa';
+import { FaExternalLinkAlt, FaDownload } from 'react-icons/fa';
 
 interface Certificate {
   title: string;
@@ -12,6 +11,7 @@ interface Certificate {
   expiryDate?: string; // Optional for certificates with expiry
   credentialLink?: string; // Optional link to verify credential
   image?: string; // Optional path to certificate image in public/images/
+  downloadLink?: string; // New: Optional path to downloadable PDF
 }
 
 interface CertificationSectionProps {
@@ -27,36 +27,40 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({ darkMode, l
       title: 'Introduction to Cybersecurity',
       issuer: 'Cisco',
       issueDate: 'jul de 2025',
-      credentialLink: 'https://www.credly.com/badges/your-cisco-credential-link', // Replace with actual link
-      image: '/images/cisco-cybersecurity.png', // Placeholder image
-    },
-    {
-      title: 'Bootcamp de Programação em Python',
-      issuer: 'MozDevz',
-      issueDate: 'nov de 2024',
-      image: '/images/mozdevz-python-bootcamp.png', // Placeholder image
-    },
-    {
-      title: 'Imersão Cloud DevOps com o Google',
-      issuer: 'Alura',
-      issueDate: 'jul de 2025', // Based on your post date
-      image: '/images/alura-cloud-devops.png', // Placeholder image
-    },
-    {
-      title: 'Certificado de Reconhecimento – Mentor no Treinamento em Programação WEB',
-      issuer: 'MozDevz',
-      issueDate: 'mai de 2025',
-      expiryDate: 'mai de 2025', // Check if this is truly an expiry or just a note
-      image: '/images/mozdevz-mentor-web-dev.png', // Placeholder image
+      credentialLink: 'https://www.credly.com/badges/your-cisco-credential-link',
+      downloadLink: '/certificates/cisco-cybersecurity.pdf',
+      image: '/images/cisco-cybersecurity.png',
     },
     {
       title: 'Certificate of Mentoring – Django Girls Maxixe',
       issuer: 'Django Girls Moçambique',
       issueDate: 'mar de 2025',
-      expiryDate: 'mar de 2025', // Check if this is truly an expiry or just a note
-      image: '/images/django-girls-maxixe.png', // Placeholder image
+      expiryDate: 'mar de 2025',
+      downloadLink: '/certificates/django-girls-maxixe.pdf',
+      image: '/images/django-girls-maxixe.png',
     },
-    // Add other certificates here
+    {
+      title: 'Imersão Cloud DevOps com o Google',
+      issuer: 'Alura',
+      issueDate: 'jul de 2025',
+      downloadLink: '/certificates/alura-cloud-devops.pdf',
+      image: '/images/alura-cloud-devops.png',
+    },
+    {
+      title: 'Certificado de Reconhecimento – Mentor no Treinamento em Programação WEB',
+      issuer: 'MozDevz',
+      issueDate: 'mai de 2025',
+      expiryDate: 'mai de 2025',
+      downloadLink: '/certificates/mozdevz-mentor-web-dev.pdf',
+      image: '/images/mozdevz-mentor-web-dev.png',
+    },
+    {
+      title: 'Bootcamp de Programação em Python',
+      issuer: 'MozDevz',
+      issueDate: 'nov de 2024',
+      downloadLink: '/certificates/mozdevz-python-bootcamp.pdf',
+      image: '/images/mozdevz-python-bootcamp.png',
+    },
   ];
 
   const sectionVariants = {
@@ -75,6 +79,15 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({ darkMode, l
   const itemVariants = {
     hidden: { opacity: 0, x: -50 },
     visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  };
+
+  const handleDownload = (downloadLink: string, title: string) => {
+    const link = document.createElement('a');
+    link.href = downloadLink;
+    link.download = `${title.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -134,21 +147,36 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({ darkMode, l
                     </span>
                   )}
                 </p>
-                {cert.credentialLink && (
-                  <motion.a
-                    href={cert.credentialLink}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={`mt-3 inline-flex items-center space-x-2 px-4 py-2 rounded-md font-medium text-sm
-                                 ${darkMode ? 'bg-teal-600 text-white hover:bg-teal-700' : 'bg-blue-600 text-white hover:bg-blue-700'}
-                                 transition-colors duration-200`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <FaExternalLinkAlt className="text-sm" />
-                    <span>{currentLanguage === 'pt' ? 'Exibir credencial' : 'Show credential'}</span>
-                  </motion.a>
-                )}
+                <div className="flex flex-wrap gap-3 mt-3 justify-center sm:justify-start">
+                  {cert.credentialLink && (
+                    <motion.a
+                      href={cert.credentialLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-flex items-center space-x-2 px-4 py-2 rounded-md font-medium text-sm
+                                   ${darkMode ? 'bg-teal-600 text-white hover:bg-teal-700' : 'bg-blue-600 text-white hover:bg-blue-700'}
+                                   transition-colors duration-200`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <FaExternalLinkAlt className="text-sm" />
+                      <span>{currentLanguage === 'pt' ? 'Exibir credencial' : 'Show credential'}</span>
+                    </motion.a>
+                  )}
+                  {cert.downloadLink && (
+                    <motion.button
+                      onClick={() => handleDownload(cert.downloadLink!, cert.title)}
+                      className={`inline-flex items-center space-x-2 px-4 py-2 rounded-md font-medium text-sm
+                                   ${darkMode ? 'bg-gray-700 text-white hover:bg-gray-600' : 'bg-gray-200 text-gray-800 hover:bg-gray-300'}
+                                   transition-colors duration-200`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      <FaDownload className="text-sm" />
+                      <span>{currentLanguage === 'pt' ? 'Baixar certificado' : 'Download certificate'}</span>
+                    </motion.button>
+                  )}
+                </div>
               </div>
             </motion.div>
           ))}

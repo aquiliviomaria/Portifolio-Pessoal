@@ -10,7 +10,7 @@ import {
   AiOutlineCalendar,
   AiOutlineMail,
 } from 'react-icons/ai';
-import { BsFillSunFill, BsFillMoonFill, BsStars } from 'react-icons/bs';
+import { BsFillSunFill, BsFillMoonFill, BsStars, BsDownload } from 'react-icons/bs';
 import {
   FaNetworkWired,
   FaShieldAlt,
@@ -19,6 +19,8 @@ import {
   FaGithub,
   FaCodeBranch,
   FaTerminal,
+  FaBars,
+  FaTimes,
 } from 'react-icons/fa';
 import {
   SiPython,
@@ -30,7 +32,6 @@ import {
   SiGit,
 } from 'react-icons/si';
 import { TbBinary, TbServer } from 'react-icons/tb';
-
 
 import AboutSection from './components/About'; 
 import ProjectSection from './components/Project';
@@ -48,9 +49,22 @@ const Page = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [language, setLanguage] = useState('pt');
   const [displayedText, setDisplayedText] = useState('');
+  const [isMobile, setIsMobile] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const fullName = '  Aquilívio Maria Cumbe '; 
   const textDelay = 75; 
+
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkIfMobile();
+    window.addEventListener('resize', checkIfMobile);
+    
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
@@ -71,8 +85,8 @@ const Page = () => {
     return () => clearInterval(typingInterval);
   }, [language, fullName]);
 
-
   const toggleDarkMode = () => setDarkMode(!darkMode);
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const FloatingIcons = () => {
     const icons = [
@@ -149,16 +163,20 @@ const Page = () => {
 
     return (
       <header className="fixed w-full z-50 p-4 bg-transparent">
-        <div className="max-w-7xl mx-auto flex justify-between items-center border border-gray-300 dark:border-gray-700 rounded-full px-2 py-1 md:px-4 md:py-2 backdrop-filter backdrop-blur-lg bg-opacity-30 dark:bg-opacity-30 bg-white dark:bg-gray-800 shadow-lg">
-          <div className="flex-1 flex justify-center">
-            <nav className="flex space-x-1 sm:space-x-2 md:space-x-4">
+        <div className="max-w-7xl mx-auto flex justify-between items-center border border-gray-300 dark:border-gray-700 rounded-full px-3 py-2 md:px-4 md:py-3 backdrop-filter backdrop-blur-lg bg-opacity-30 dark:bg-opacity-30 bg-white dark:bg-gray-800 shadow-lg">
+          <div className="flex-1 flex justify-center items-center">
+            {/* Desktop Menu */}
+            <nav className="hidden md:flex space-x-4">
               {Object.keys(sectionNames).map((section) => (
                 <motion.button
                   key={section}
-                  onClick={() => setActiveSection(section)}
-                  whileHover={{ y: -3, scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`relative flex items-center p-1 md:p-3 rounded-lg transition-all group ${
+                  onClick={() => {
+                    setActiveSection(section);
+                    setIsMenuOpen(false);
+                  }}
+                  whileHover={{ y: -4, scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  className={`relative flex items-center p-3 rounded-lg transition-all group ${
                     activeSection === section
                       ? darkMode
                         ? 'text-teal-400'
@@ -169,7 +187,7 @@ const Page = () => {
                   }`}
                 >
                   <span
-                    className={`text-xl md:text-2xl ${
+                    className={`text-3xl ${
                       activeSection === section
                         ? 'animate-pulse'
                         : 'group-hover:animate-bounce'
@@ -177,23 +195,77 @@ const Page = () => {
                   >
                     {icons[section as keyof typeof icons]}
                   </span>
-                  <span className="hidden md:inline ml-2">
-                    {sectionNames[section as keyof typeof sectionNames][language]}
-                  </span>
-                  <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-gray-700 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 group-active:opacity-100 transition-opacity duration-300 whitespace-nowrap z-50">
+                  <span className="ml-2 text-base">
                     {sectionNames[section as keyof typeof sectionNames][language]}
                   </span>
                 </motion.button>
               ))}
             </nav>
+            {/* Mobile Hamburger Icon */}
+            <motion.button
+              className="md:hidden text-2xl p-2"
+              onClick={toggleMenu}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
+            >
+              {isMenuOpen ? <FaTimes /> : <FaBars />}
+            </motion.button>
           </div>
 
-          <div className="flex items-center space-x-1 md:space-x-3">
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <motion.nav
+              className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg md:hidden"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex flex-col p-4 space-y-2">
+                {Object.keys(sectionNames).map((section) => (
+                  <motion.button
+                    key={section}
+                    onClick={() => {
+                      setActiveSection(section);
+                      setIsMenuOpen(false);
+                    }}
+                    whileHover={{ y: -4, scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className={`flex items-center p-3 rounded-lg transition-all group ${
+                      activeSection === section
+                        ? darkMode
+                          ? 'text-teal-400'
+                          : 'text-blue-600'
+                        : darkMode
+                          ? 'text-gray-400 hover:text-white'
+                          : 'text-gray-600 hover:text-gray-900'
+                    }`}
+                  >
+                    <span
+                      className={`text-2xl ${
+                        activeSection === section
+                          ? 'animate-pulse'
+                          : 'group-hover:animate-bounce'
+                      }`}
+                    >
+                      {icons[section as keyof typeof icons]}
+                    </span>
+                    <span className="ml-2 text-sm">
+                      {sectionNames[section as keyof typeof sectionNames][language]}
+                    </span>
+                  </motion.button>
+                ))}
+              </div>
+            </motion.nav>
+          )}
+
+          <div className="flex items-center space-x-2 md:space-x-4">
             <motion.button
               onClick={toggleDarkMode}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
-              className={`p-1 text-xl ${
+              className={`p-2 text-2xl md:text-3xl ${
                 darkMode ? 'text-yellow-400' : 'text-gray-700'
               }`}
             >
@@ -203,7 +275,7 @@ const Page = () => {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className={`p-0.5 rounded-full bg-transparent border text-xs md:text-base ${
+              className={`p-1 rounded-full bg-transparent border text-sm md:text-base ${
                 darkMode
                   ? 'text-white border-gray-600'
                   : 'text-gray-700 border-gray-300'
@@ -225,16 +297,18 @@ const Page = () => {
         description:
           'Meu trabalho é criar soluções que não só funcionam, mas que também encantam e inspiram.',
         skills: 'Habilidades:',
-        roles: ['Desenvolvedor', 'Pentester', 'Gestor de Redes', 'Freelancer'],
+        roles: ['Desenvolvedor', 'Pentester', 'Engenheiro de Redes', 'Freelancer'],
         cta: 'Explorar Projetos',
+        downloadCv: 'Baixar CV',
       },
       en: {
         welcome: '👋 Hello, I am',
         description:
           'My work is about crafting solutions that not only function, but also delight and inspire.',
         skills: 'Skills:',
-        roles: ['Developer', 'Pentester', 'Network Manager', 'Freelancer'],
+        roles: ['Developer', 'Pentester', 'Network Engineer', 'Freelancer'],
         cta: 'Explore Projects',
+        downloadCv: 'Download CV',
       },
     };
 
@@ -246,29 +320,23 @@ const Page = () => {
       'shadow-[0_0_20px_rgba(168,85,247,0.6)]',
     ];
 
+    const handleDownloadCV = () => {
+      const cvPath = '/docs/Aquilivio_Maria_Cumbe_CV.pdf';
+      const link = document.createElement('a');
+      link.href = cvPath;
+      link.download = `Aquilivio_Maria_Cumbe_CV_${language.toUpperCase()}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    };
+
     return (
-      <section
-        className={`relative min-h-screen flex items-center justify-center`}
-      >
+      <section className={`relative min-h-screen flex items-center justify-center`}>
         <FloatingIcons />
 
-        <div className="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center justify-center relative z-10">
-          {/* Photo for mobile - visible on small screens, top-aligned */}
-          <motion.div
-            className="w-48 h-48 md:hidden rounded-full overflow-hidden mb-8 shadow-2xl"
-            initial={{ opacity: 0, scale: 0.8, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(0,255,255,0.7)' }}
-          >
-            <img
-              src="/images/aquilivio-photo.jpg"
-              alt="Aquilívio Maria Cumbe"
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-
-          <div className="text-center md:text-left max-w-2xl md:mr-12">
+        <div className="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center justify-center relative z-10 gap-8 md:gap-12">
+          {/* Content - positioned left on desktop, above photo on mobile */}
+          <div className="text-center md:text-left max-w-2xl order-2 md:order-1">
             <h1
               className={`text-4xl md:text-5xl font-bold mb-4 ${
                 darkMode ? 'text-white' : 'text-gray-900'
@@ -314,7 +382,7 @@ const Page = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 * index, duration: 0.5 }}
-                  className={`px-5 py-2 rounded-lg font-medium ${
+                  className={`px-4 py-2 rounded-lg font-medium text-sm md:text-base ${
                     darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
                   } ${roleShadows[index]} transition-shadow duration-300 ease-in-out hover:shadow-[0_0_30px_rgba(0,255,255,0.8)]`}
                 >
@@ -323,30 +391,44 @@ const Page = () => {
               ))}
             </div>
 
-            <motion.a
-              href="#project"
-              onClick={() => setActiveSection('project')}
-              className={`inline-flex items-center px-6 py-3 rounded-lg text-lg font-semibold ${
-                darkMode ? 'bg-teal-600 hover:bg-teal-700' : 'bg-blue-600 hover:bg-blue-700'
-              } text-white`}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {content[language].cta}
-              <BsStars className="ml-2" />
-            </motion.a>
+            <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
+              <motion.a
+                href="#project"
+                onClick={() => setActiveSection('project')}
+                className={`inline-flex items-center justify-center px-6 py-3 rounded-lg text-lg font-semibold ${
+                  darkMode ? 'bg-teal-600 hover:bg-teal-700' : 'bg-blue-600 hover:bg-blue-700'
+                } text-white`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {content[language].cta}
+                <BsStars className="ml-2" />
+              </motion.a>
+              
+              <motion.button
+                onClick={handleDownloadCV}
+                className={`inline-flex items-center justify-center px-6 py-3 rounded-lg text-lg font-semibold ${
+                  darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
+                } ${darkMode ? 'text-white' : 'text-gray-800'}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {content[language].downloadCv}
+                <BsDownload className="ml-2" />
+              </motion.button>
+            </div>
           </div>
 
-          {/* Photo for desktop - visible on larger screens, aligned to the right */}
+          {/* Photo - positioned right on desktop, below content on mobile */}
           <motion.div
-            className="hidden md:block w-64 h-64 lg:w-80 lg:h-80 rounded-full overflow-hidden shadow-2xl"
-            initial={{ opacity: 0, x: 50, scale: 0.8 }}
-            animate={{ opacity: 1, x: 0, scale: 1 }}
-            transition={{ delay: 0.3, duration: 0.8, ease: 'easeOut' }}
+            className={`${isMobile ? 'w-40 h-40 mt-8 order-1' : 'w-64 h-64 lg:w-80 lg:h-80 md:ml-12 order-2'} rounded-full overflow-hidden shadow-2xl`}
+            initial={{ opacity: 0, scale: 0.8, y: isMobile ? 50 : 0, x: isMobile ? 0 : 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(0,255,255,0.7)' }}
           >
             <img
-              src="/aquilivio-photo.jpg"
+              src="/images/aquilivio-photo.jpg"
               alt="Aquilívio Maria Cumbe"
               className="w-full h-full object-cover"
             />
@@ -355,7 +437,6 @@ const Page = () => {
       </section>
     );
   };
-
 
   const Footer = () => {
     return (
@@ -366,7 +447,7 @@ const Page = () => {
           </div>
           <div className="flex space-x-6 text-2xl">
             <a
-              href="https://wa.me/258840000000"
+              href="https://wa.me/258874544510?text=👋%20Olá%20Aquilivio,%20estou%20entrando%20em%20contacto%20através%20do%20seu%20portfólio!" target="_blank" rel="noopener noreferrer"
               className={
                 darkMode
                   ? 'text-gray-400 hover:text-teal-400'
@@ -377,7 +458,7 @@ const Page = () => {
               <FaWhatsapp />
             </a>
             <a
-              href="https://linkedin.com/in/aquilivio"
+              href="https://www.linkedin.com/in/aquilivio-maria-cumbe-b2a890289/" target="_blank" rel="noopener noreferrer"
               className={
                 darkMode
                   ? 'text-gray-400 hover:text-teal-400'
@@ -388,7 +469,7 @@ const Page = () => {
               <FaLinkedinIn />
             </a>
             <a
-              href="https://github.com/aquilivio"
+              href="https://github.com/aquiliviomaria" target="_blank" rel="noopener noreferrer"
               className={
                 darkMode
                   ? 'text-gray-400 hover:text-teal-400'
@@ -409,7 +490,7 @@ const Page = () => {
       className={`min-h-screen ${
         darkMode ? 'bg-gray-950 text-gray-100' : 'bg-gray-50 text-gray-900'
       } relative`}
-    >{/* Render your AboutSection component here */}
+    >
       <Header />
       <div className="pt-20">
         {activeSection === 'home' && <HomeSection />}

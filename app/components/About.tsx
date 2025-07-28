@@ -20,9 +20,14 @@ interface AboutSectionProps {
 
 const AboutSection: React.FC<AboutSectionProps> = ({ darkMode, language }) => {
   const [isMounted, setIsMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsMounted(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 300);
+    return () => clearTimeout(timer);
   }, []);
 
   const content = {
@@ -150,7 +155,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ darkMode, language }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: 0.08,
         delayChildren: 0.2
       }
     }
@@ -163,78 +168,95 @@ const AboutSection: React.FC<AboutSectionProps> = ({ darkMode, language }) => {
       opacity: 1,
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 10
+        stiffness: 120,
+        damping: 12,
+        delay: 0.1
       }
     }
   };
 
   const textVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: 15 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1]
+        duration: 0.5,
+        ease: [0.42, 0, 0.58, 1]
       }
     }
   };
 
   const techCardVariants = {
-    hidden: { y: 30, opacity: 0 },
+    hidden: { y: 30, opacity: 0, scale: 0.95 },
     visible: {
       y: 0,
       opacity: 1,
+      scale: 1,
       transition: {
-        duration: 0.5,
-        ease: "backOut"
+        type: "spring",
+        stiffness: 150,
+        damping: 15,
+        duration: 0.5
       }
     },
     hover: {
       y: -5,
+      scale: 1.02,
+      boxShadow: darkMode
+        ? "0 8px 20px rgba(0, 255, 255, 0.3)"
+        : "0 8px 20px rgba(0, 0, 255, 0.2)",
       transition: { duration: 0.2 }
     }
   };
 
   const techItemVariants = {
-    hidden: { scale: 0.8, opacity: 0 },
+    hidden: { x: -20, opacity: 0, rotate: -10 },
     visible: {
-      scale: 1,
+      x: 0,
       opacity: 1,
-      transition: { 
+      rotate: 0,
+      transition: {
         type: "spring",
-        stiffness: 300,
-        damping: 10
+        stiffness: 200,
+        damping: 12,
+        duration: 0.4
       }
     },
     hover: {
-      scale: 1.05,
+      scale: 1.1,
+      rotate: 2,
       transition: { duration: 0.2 }
     }
   };
 
-  if (!isMounted) {
-    return null;
+  if (!isMounted || isLoading) {
+    return (
+      <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`}>
+        <div className="animate-pulse">
+          <div className={`h-8 w-32 rounded-full ${darkMode ? 'bg-gray-800' : 'bg-gray-200'}`}></div>
+        </div>
+      </div>
+    );
   }
 
   return (
     <section
       id="about"
-      className={`min-h-screen py-12 px-4 sm:px-6 ${
+      className={`min-h-screen py-8 px-4 sm:px-6 md:py-12 ${
         darkMode ? 'bg-gray-950 text-gray-100' : 'bg-gray-50 text-gray-900'
-      } flex items-center justify-center`}
+      } flex items-center justify-center overflow-hidden`}
     >
       <motion.div
-        className="max-w-4xl mx-auto w-full"
+        className="max-w-4xl mx-auto w-full px-2 sm:px-4"
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
       >
         {/* Main Title */}
         <motion.h2
-          className={`text-3xl sm:text-4xl font-bold text-center mb-8 sm:mb-12 ${
+          className={`text-3xl sm:text-4xl font-bold text-center mb-6 sm:mb-10 ${
             darkMode ? 'text-teal-400' : 'text-blue-600'
           }`}
           variants={titleVariants}
@@ -243,79 +265,77 @@ const AboutSection: React.FC<AboutSectionProps> = ({ darkMode, language }) => {
         </motion.h2>
 
         {/* Description Text */}
-        <div className="space-y-6 mb-12">
+        <div className="space-y-4 sm:space-y-6 mb-8 sm:mb-12">
           <motion.p
-            className={`text-base sm:text-lg leading-relaxed ${
+            className={`text-sm sm:text-base md:text-lg leading-relaxed ${
               darkMode ? 'text-gray-300' : 'text-gray-700'
             }`}
             variants={textVariants}
             dangerouslySetInnerHTML={{ __html: content[currentLanguage].description1.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
           />
-          
           <motion.p
-            className={`text-base sm:text-lg leading-relaxed ${
+            className={`text-sm sm:text-base md:text-lg leading-relaxed ${
+              darkMode ? 'text-gray-300' : 'text-gray-700'
+            }`}
+            variants={textVariants}
+            transition={{ delay: 0.05 }}
+            dangerouslySetInnerHTML={{ __html: content[currentLanguage].description2.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
+          />
+          <motion.p
+            className={`text-sm sm:text-base md:text-lg leading-relaxed ${
               darkMode ? 'text-gray-300' : 'text-gray-700'
             }`}
             variants={textVariants}
             transition={{ delay: 0.1 }}
-            dangerouslySetInnerHTML={{ __html: content[currentLanguage].description2.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
-          />
-          
-          <motion.p
-            className={`text-base sm:text-lg leading-relaxed ${
-              darkMode ? 'text-gray-300' : 'text-gray-700'
-            }`}
-            variants={textVariants}
-            transition={{ delay: 0.2 }}
             dangerouslySetInnerHTML={{ __html: content[currentLanguage].description3.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
           />
         </div>
 
         {/* Technologies Title */}
         <motion.h3
-          className={`text-2xl sm:text-3xl font-bold text-center mb-8 ${
+          className={`text-xl sm:text-2xl md:text-3xl font-bold text-center mb-6 ${
             darkMode ? 'text-white' : 'text-gray-900'
           }`}
           variants={titleVariants}
-          transition={{ delay: 0.3 }}
+          transition={{ delay: 0.15 }}
         >
           {content[currentLanguage].technologiesTitle}
         </motion.h3>
 
         {/* Technologies Grid */}
-        <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-5"
           variants={containerVariants}
+          transition={{ delay: 0.2 }}
         >
           {technologiesData.map((techCategory, categoryIndex) => (
             <motion.div
               key={categoryIndex}
               variants={techCardVariants}
               whileHover="hover"
-              className={`rounded-lg p-4 sm:p-5 shadow-md border ${
+              className={`rounded-lg p-3 sm:p-4 shadow-md border ${
                 darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-200'
               }`}
-              transition={{ delay: categoryIndex * 0.05 + 0.3 }}
+              transition={{ delay: categoryIndex * 0.1 + 0.2 }}
             >
-              <h4 className={`text-lg sm:text-xl font-semibold mb-3 ${
+              <h4 className={`text-base sm:text-lg font-semibold mb-2 ${
                 darkMode ? 'text-teal-300' : 'text-blue-700'
               }`}>
                 {techCategory.category[currentLanguage]}
               </h4>
-              
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
                 {techCategory.items.map((tech, itemIndex) => (
                   <motion.div
                     key={tech.name}
                     variants={techItemVariants}
                     whileHover="hover"
-                    className={`flex items-center space-x-2 text-sm sm:text-base ${
+                    className={`flex items-center space-x-2 text-xs sm:text-sm ${
                       darkMode ? 'text-gray-300' : 'text-gray-700'
                     }`}
-                    transition={{ delay: itemIndex * 0.03 + categoryIndex * 0.02 }}
+                    transition={{ delay: itemIndex * 0.05 + categoryIndex * 0.1 + 0.3 }}
                   >
-                    <span className="text-xl sm:text-2xl">{tech.icon}</span>
-                    <span>{tech.name}</span>
+                    <span className="text-lg sm:text-xl">{tech.icon}</span>
+                    <span className="truncate">{tech.name}</span>
                   </motion.div>
                 ))}
               </div>
