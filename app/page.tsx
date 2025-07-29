@@ -1,5 +1,5 @@
 'use client';
-
+import React from 'react'; 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
@@ -33,7 +33,7 @@ import {
 } from 'react-icons/si';
 import { TbBinary, TbServer } from 'react-icons/tb';
 
-import AboutSection from './components/About'; 
+import AboutSection from './components/About';
 import ProjectSection from './components/Project';
 import ExperienceSection from './components/Experience';
 import EventSection from './components/Event';
@@ -42,33 +42,35 @@ import ContactSection from './components/Contact';
 
 const Page = () => {
   const [darkMode, setDarkMode] = useState(() => {
-    if (typeof window !== 'undefined')
-      return localStorage.getItem('darkMode') === 'true';
+    if (typeof window !== 'undefined') {
+      const savedMode = localStorage.getItem('darkMode');
+      return savedMode ? savedMode === 'true' : true;
+    }
     return true;
   });
   const [activeSection, setActiveSection] = useState('home');
-  const [language, setLanguage] = useState('pt');
+  const [language, setLanguage] = useState<'pt' | 'en'>('pt'); 
   const [displayedText, setDisplayedText] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const fullName = '  Aquilívio Maria Cumbe '; 
-  const textDelay = 75; 
+  const fullName = '  Aquilívio Maria Cumbe ';
+  const textDelay = 75;
 
   useEffect(() => {
     const checkIfMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkIfMobile();
     window.addEventListener('resize', checkIfMobile);
-    
+
     return () => window.removeEventListener('resize', checkIfMobile);
   }, []);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', darkMode);
-    localStorage.setItem('darkMode', darkMode);
+    localStorage.setItem('darkMode', darkMode.toString());
   }, [darkMode]);
 
   useEffect(() => {
@@ -141,7 +143,12 @@ const Page = () => {
   };
 
   const Header = () => {
-    const sectionNames = {
+    interface SectionName {
+      pt: string;
+      en: string;
+    }
+  
+    const sectionNames: Record<string, SectionName> = {
       home: { pt: 'Home', en: 'Home' },
       about: { pt: 'Sobre', en: 'About' },
       project: { pt: 'Projetos', en: 'Projects' },
@@ -150,17 +157,18 @@ const Page = () => {
       certification: { pt: 'Certificados', en: 'Certifications' },
       contact: { pt: 'Contato', en: 'Contact' },
     };
-
-    const icons = {
-      home: <AiOutlineHome />,
-      about: <AiOutlineUser />,
-      project: <AiOutlineProject />,
-      experience: <AiOutlineBook />,
-      event: <AiOutlineCalendar />,
-      certification: <AiOutlineBook />,
-      contact: <AiOutlineMail />,
+  
+    // Usar Record<string, React.ElementType> para suportar indexação dinâmica
+    const icons: Record<string, React.ElementType> = {
+      home: AiOutlineHome,
+      about: AiOutlineUser,
+      project: AiOutlineProject,
+      experience: AiOutlineBook,
+      event: AiOutlineCalendar,
+      certification: AiOutlineBook,
+      contact: AiOutlineMail,
     };
-
+  
     return (
       <header className="fixed w-full z-50 p-4 bg-transparent">
         <div className="max-w-7xl mx-auto flex justify-between items-center border border-gray-300 dark:border-gray-700 rounded-full px-3 py-2 md:px-4 md:py-3 backdrop-filter backdrop-blur-lg bg-opacity-30 dark:bg-opacity-30 bg-white dark:bg-gray-800 shadow-lg">
@@ -182,8 +190,8 @@ const Page = () => {
                         ? 'text-teal-400'
                         : 'text-blue-600'
                       : darkMode
-                        ? 'text-gray-400 hover:text-white'
-                        : 'text-gray-600 hover:text-gray-900'
+                      ? 'text-gray-400 hover:text-white'
+                      : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
                   <span
@@ -193,10 +201,11 @@ const Page = () => {
                         : 'group-hover:animate-bounce'
                     }`}
                   >
-                    {icons[section as keyof typeof icons]}
+                    {/* Usar o componente diretamente com < > */}
+                    {React.createElement(icons[section])}
                   </span>
                   <span className="ml-2 text-base">
-                    {sectionNames[section as keyof typeof sectionNames][language]}
+                    {sectionNames[section][language]}
                   </span>
                 </motion.button>
               ))}
@@ -212,7 +221,7 @@ const Page = () => {
               {isMenuOpen ? <FaTimes /> : <FaBars />}
             </motion.button>
           </div>
-
+  
           {/* Mobile Menu */}
           {isMenuOpen && (
             <motion.nav
@@ -249,17 +258,17 @@ const Page = () => {
                           : 'group-hover:animate-bounce'
                       }`}
                     >
-                      {icons[section as keyof typeof icons]}
+                      {React.createElement(icons[section])}
                     </span>
                     <span className="ml-2 text-sm">
-                      {sectionNames[section as keyof typeof sectionNames][language]}
+                      {sectionNames[section][language]}
                     </span>
                   </motion.button>
                 ))}
               </div>
             </motion.nav>
           )}
-
+  
           <div className="flex items-center space-x-2 md:space-x-4">
             <motion.button
               onClick={toggleDarkMode}
@@ -271,10 +280,14 @@ const Page = () => {
             >
               {darkMode ? <BsFillSunFill /> : <BsFillMoonFill />}
             </motion.button>
-
+  
+            <label htmlFor="language-select" className="sr-only">
+              Select language
+            </label>
             <select
+              id="language-select"
               value={language}
-              onChange={(e) => setLanguage(e.target.value)}
+              onChange={(e) => setLanguage(e.target.value as 'pt' | 'en')}
               className={`p-1 rounded-full bg-transparent border text-sm md:text-base ${
                 darkMode
                   ? 'text-white border-gray-600'
@@ -289,7 +302,6 @@ const Page = () => {
       </header>
     );
   };
-
   const HomeSection = () => {
     const content = {
       pt: {
@@ -354,7 +366,7 @@ const Page = () => {
               <motion.span
                 className="inline-block"
                 animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity, ease: "easeInOut" }}
+                transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
               >
                 |
               </motion.span>
@@ -404,7 +416,7 @@ const Page = () => {
                 {content[language].cta}
                 <BsStars className="ml-2" />
               </motion.a>
-              
+
               <motion.button
                 onClick={handleDownloadCV}
                 className={`inline-flex items-center justify-center px-6 py-3 rounded-lg text-lg font-semibold ${
@@ -447,7 +459,9 @@ const Page = () => {
           </div>
           <div className="flex space-x-6 text-2xl">
             <a
-              href="https://wa.me/258874544510?text=👋%20Olá%20Aquilivio,%20estou%20entrando%20em%20contacto%20através%20do%20seu%20portfólio!" target="_blank" rel="noopener noreferrer"
+              href="https://wa.me/258874544510?text=👋%20Olá%20Aquilivio,%20estou%20entrando%20em%20contacto%20através%20do%20seu%20portfólio!"
+              target="_blank"
+              rel="noopener noreferrer"
               className={
                 darkMode
                   ? 'text-gray-400 hover:text-teal-400'
@@ -458,7 +472,9 @@ const Page = () => {
               <FaWhatsapp />
             </a>
             <a
-              href="https://www.linkedin.com/in/aquilivio-maria-cumbe-b2a890289/" target="_blank" rel="noopener noreferrer"
+              href="https://www.linkedin.com/in/aquilivio-maria-cumbe-b2a890289/"
+              target="_blank"
+              rel="noopener noreferrer"
               className={
                 darkMode
                   ? 'text-gray-400 hover:text-teal-400'
@@ -469,7 +485,9 @@ const Page = () => {
               <FaLinkedinIn />
             </a>
             <a
-              href="https://github.com/aquiliviomaria" target="_blank" rel="noopener noreferrer"
+              href="https://github.com/aquiliviomaria"
+              target="_blank"
+              rel="noopener noreferrer"
               className={
                 darkMode
                   ? 'text-gray-400 hover:text-teal-400'

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Variants } from 'framer-motion';
 import { FaExternalLinkAlt, FaDownload } from 'react-icons/fa';
 
 interface Certificate {
@@ -70,7 +71,7 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({ darkMode, l
       y: 0,
       transition: {
         duration: 0.8,
-        ease: 'easeOut',
+        ease: 'easeOut' as const,
         staggerChildren: 0.2,
       },
     },
@@ -78,7 +79,7 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({ darkMode, l
 
   const itemVariants = {
     hidden: { opacity: 0, x: -50 },
-    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.5, ease: 'easeOut' as const } },
   };
 
   const handleDownload = (downloadLink: string, title: string) => {

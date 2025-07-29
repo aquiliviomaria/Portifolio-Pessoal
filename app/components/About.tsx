@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Variants } from 'framer-motion';
 import {
   SiPython, SiJavascript, SiTypescript, SiReact, SiNextdotjs,
   SiDjango, SiSpring, SiGit, SiGithub, SiIntellijidea,
@@ -167,7 +168,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ darkMode, language }) => {
       y: 0,
       opacity: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 120,
         damping: 12,
         delay: 0.1
@@ -182,7 +183,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ darkMode, language }) => {
       y: 0,
       transition: {
         duration: 0.5,
-        ease: [0.42, 0, 0.58, 1]
+        ease: [0.42, 0, 0.58, 1] as const
       }
     }
   };
@@ -194,7 +195,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ darkMode, language }) => {
       opacity: 1,
       scale: 1,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 150,
         damping: 15,
         duration: 0.5
@@ -217,7 +218,7 @@ const AboutSection: React.FC<AboutSectionProps> = ({ darkMode, language }) => {
       opacity: 1,
       rotate: 0,
       transition: {
-        type: "spring",
+        type: "spring" as const,
         stiffness: 200,
         damping: 12,
         duration: 0.4

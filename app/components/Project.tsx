@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Variants } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import {
   SiReact,
@@ -39,7 +40,7 @@ interface Project {
     en: string;
   };
   image: string;
-  technologies: JSX.Element[];
+  technologies: React.ReactNode[];
   link?: string;
   githubLink?: string;
   loading?: boolean;
@@ -210,7 +211,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
       y: 0,
       transition: {
         duration: 0.8,
-        ease: 'easeOut',
+        ease: 'easeOut' as const,
         staggerChildren: 0.15,
       },
     },
@@ -223,7 +224,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
       y: 0, 
       scale: 1,
       transition: { 
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 100,
         damping: 15,
         duration: 0.5
@@ -244,7 +245,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
       opacity: 1,
       y: 0,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 120,
         damping: 12,
         duration: 0.5
