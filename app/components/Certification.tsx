@@ -2,17 +2,16 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Variants } from 'framer-motion';
 import { FaExternalLinkAlt, FaDownload } from 'react-icons/fa';
 
 interface Certificate {
   title: string;
   issuer: string;
   issueDate: string;
-  expiryDate?: string; // Optional for certificates with expiry
-  credentialLink?: string; // Optional link to verify credential
-  image?: string; // Optional path to certificate image in public/images/
-  downloadLink?: string; // New: Optional path to downloadable PDF
+  expiryDate?: string; 
+  credentialLink?: string; 
+  image?: string; 
+  downloadLink?: string; 
 }
 
 interface CertificationSectionProps {

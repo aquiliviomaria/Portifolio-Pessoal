@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Variants } from 'framer-motion';
 import {
   SiPython, SiJavascript, SiTypescript, SiReact, SiNextdotjs,
   SiDjango, SiSpring, SiGit, SiGithub, SiIntellijidea,

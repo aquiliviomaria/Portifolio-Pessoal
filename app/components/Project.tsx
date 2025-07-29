@@ -2,7 +2,6 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Variants } from 'framer-motion';
 import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
 import {
   SiReact,
@@ -62,7 +61,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `O RandTeam é uma ferramenta intuitiva e eficiente para realizar sorteios de temas entre grupos. Projetado para facilitar a distribuição de temas de forma justa e organizada para trabalhos em equipe, apresentações ou qualquer atividade que exija divisão de tarefas.`,
         en: `RandTeam is an intuitive and efficient tool for random topic assignments among groups. Designed to facilitate the fair and organized distribution of topics for teamwork, presentations, or any activity requiring task division.`,
       },
-      image: '/images/randteam.png', // Ensure this file exists in /public/images/
+      image: '/images/randteam.png', 
       technologies: [<SiJavascript key="javascript" className="text-yellow-400" title="JavaScript" />, <SiHtml5 key="html5" className="text-orange-500" title="HTML5" />, <SiCss3 key="css3" className="text-blue-500" title="CSS3"/>, <SiTailwindcss key="tailwind" className="text-blue-400" title="Tailwind CSS" />, <SiVercel key="vercel" className="text-gray-600 dark:text-gray-300" title="Vercel" />],
       link: 'https://randteam.vercel.app',
       githubLink: 'https://github.com/aquiliviomaria/RandTeam_Sorteio_Inteligente',
@@ -74,7 +73,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `Txopela Tour é uma plataforma web desenvolvida com Django que promove e recomenda automaticamente pontos turísticos em Moçambique. Utilizando um algoritmo de recomendação, o sistema sugere locais com base em avaliações e interações de visitantes autenticados.`,
         en: `Txopela Tour is a web platform developed with Django that automatically promotes and recommends tourist spots in Mozambique, suggesting locations based on visitor ratings and interactions.`,
       },
-      image: '/images/txopela-tour.png', // Ensure this file exists in /public/images/
+      image: '/images/txopela-tour.png', 
       technologies: [<SiPython key="python" className="text-blue-500" title="Python" />, <SiDjango key="django" className="text-green-700" title="Django" />, <SiBootstrap key="bootstrap" className="text-purple-500" title="Bootstrap" />, <SiMysql key="mysql" className="text-blue-600" title="MySQL/SQLite" />],
       link: '#',
       githubLink: 'https://github.com/aquiliviomaria/txopela-tour',
@@ -86,7 +85,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `KHOSTA Penal é um sistema web criado como projeto académico para facilitar a administração de estabelecimentos prisionais, centralizando informações de reclusos, visitantes e relatórios administrativos.`,
         en: `KHOSTA Penal is a web system created as an academic project to facilitate the administration of prison facilities, centralizing inmate, visitor, and administrative reports.`,
       },
-      image: '/images/khotsa.png', // Ensure this file exists in /public/images/
+      image: '/images/khotsa.png', 
       technologies: [<SiJavascript key="javascript" className="text-yellow-400" title="JavaScript" />, <SiHtml5 key="html5" className="text-orange-500" title="HTML5" />, <SiCss3 key="css3" className="text-blue-500" title="CSS3" />, <SiTailwindcss key="tailwind" className="text-blue-400" title="Tailwind CSS" />, <SiVercel key="vercel" className="text-gray-600 dark:text-gray-300" title="Vercel" />],
       link: 'https://khotsa.netlify.app',
       githubLink: 'https://github.com/aquiliviomaria/khotsa',
@@ -98,7 +97,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `Um sistema de votação eletrónica robusto e seguro, desenvolvido com Django, que garante a integridade, privacidade e acessibilidade do processo eleitoral. Ideal para gerir votações de forma eficiente e transparente.`,
         en: `A robust and secure electronic voting system, developed with Django, ensuring the integrity, privacy, and accessibility of the electoral process. Ideal for managing votes efficiently and transparently.`,
       },
-      image: '/images/secure-vote.png', // Ensure this file exists in /public/images/
+      image: '/images/secure-vote.png', 
       technologies: [<SiPython key="python" className="text-blue-500" title="Python" />, <SiDjango key="django" className="text-green-700" title="Django" />, <SiHtml5 key="html5" className="text-orange-500" title="HTML5" />, <SiCss3 key="css3" className="text-blue-500" title="CSS3" />, <SiJavascript key="javascript" className="text-yellow-400" title="JavaScript" />],
       link: '#',
       githubLink: 'https://github.com/aquiliviomaria/secure-vote',
@@ -110,7 +109,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `Este é o site da comunidade MozDevz Inhambane, desenvolvido para representar e divulgar as atividades, eventos e equipa da comunidade de desenvolvedores da Universidade Metodista Unida de Moçambique (UMUM).`,
         en: `This is the MozDevz Inhambane community website, developed to represent and publicize the activities, events, and team of the developer community at the United Methodist University of Mozambique (UMUM).`,
       },
-      image: '/images/mozdevz-website.png', // This image is displaying correctly
+      image: '/images/mozdevz-website.png', 
       technologies: [<SiHtml5 key="html5" className="text-orange-500" title="HTML5" />, <SiCss3 key="css3" className="text-blue-500" title="CSS3" />, <SiJavascript key="javascript" className="text-yellow-400" title="JavaScript" />, <SiBootstrap key="bootstrap" className="text-purple-500" title="Bootstrap" />, <SiGithubpages key="githubpages" className="text-gray-600 dark:text-gray-300" title="GitHub Pages" />],
       link: 'https://aquiliviomaria.github.io/MozDev_Inhambane/',
       githubLink: 'https://github.com/aquiliviomaria/MozDev_Inhambane',
@@ -141,7 +140,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `Um aplicativo simples de lista de tarefas, onde você pode adicionar, editar, excluir e filtrar suas tarefas. Oferece funcionalidade de modo claro/escuro e armazena tarefas no armazenamento local do navegador para persistência.`,
         en: `A simple to-do list application where you can add, edit, delete, and filter your tasks. It offers light/dark mode functionality and stores tasks in the browser's local storage for persistence.`,
       },
-      image: '/images/minhas-tarefas.png', // Ensure this file exists in /public/images/
+      image: '/images/minhas-tarefas.png', 
       technologies: [<SiJavascript key="javascript" className="text-yellow-400" title="JavaScript" />, <SiHtml5 key="html5" className="text-orange-500" title="HTML5" />, <SiCss3 key="css3" className="text-blue-500" title="CSS3" />],
       link: 'https://minhastarefasaqui.netlify.app/',
       githubLink: 'https://github.com/aquiliviomaria/minhas-tarefas-TodoList-Js',
@@ -172,7 +171,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `Uma plataforma digital multifuncional que conecta pessoas, produtos e serviços em Moçambique. Permite encontrar profissionais locais, comprar produtos de vendedores comunitários e obter sugestões personalizadas. Slogan: "Liga-te ao que precisas, onde estiveres."`,
         en: `A multifunctional digital platform connecting people, products, and services in Mozambique. It allows finding local professionals, buying products from community sellers, and getting personalized suggestions. Slogan: "Connect to what you need, wherever you are."`,
       },
-      image: '/images/linkoma-logo.png', // This image is displaying correctly
+      image: '/images/linkoma-logo.png', 
       technologies: [
         <FaLink key="linkoma-icon" className="text-pink-500" title="Connect" />,
         <SiDjango key="django" className="text-green-700" title="Django" />,
@@ -190,7 +189,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
         pt: `Transforma a monitorização de redes tornando-a acessível para escolas, centros comunitários e pequenas organizações. Recopila dados em tempo real, visualiza o desempenho da rede de forma acessível e gera alertas automáticos em caso de falhas. "Ouve a rede e deixa-a falar por si mesma."`,
         en: `Transforms network monitoring by making it accessible for schools, community centers, and small organizations. Gathers real-time data, visualizes network performance accessibly, and generates automatic alerts for failures. "Listen to the network and let it speak for itself."`,
       },
-      image: '/images/tivanet-logo.png', // This image is displaying correctly
+      image: '/images/tivanet-logo.png', 
       technologies: [
         <IoCloudOutline key="tivanet-icon" className="text-blue-400" title="Network Monitoring" />,
         <SiPython key="python" className="text-blue-500" title="Python" />,
@@ -255,7 +254,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
 
   // Fallback image for missing images
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
-    e.currentTarget.src = '/images/placeholder.png'; // Ensure placeholder.png exists in /public/images/
+    e.currentTarget.src = '/images/placeholder.png'; 
   };
 
   return (
@@ -303,7 +302,7 @@ const ProjectSection: React.FC<ProjectSectionProps> = ({ darkMode, language }) =
                   onError={handleImageError}
                 />
               ) : (
-                <div className="w-full h-48 mb-4" /> // Empty placeholder for no image
+                <div className="w-full h-48 mb-4" /> 
               )}
               <h3
                 className={`text-2xl font-semibold mb-3 ${

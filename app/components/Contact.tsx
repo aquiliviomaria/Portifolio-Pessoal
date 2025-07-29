@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FaPaperPlane, FaSpinner } from 'react-icons/fa'; // Import FaSpinner for loading state
+import { FaPaperPlane, FaSpinner } from 'react-icons/fa'; 
 
 interface ContactSectionProps {
   darkMode: boolean;
@@ -76,8 +76,7 @@ const ContactSection: React.FC<ContactSectionProps> = ({ darkMode, language }) =
 
       if (response.ok) {
         setStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' }); // Clear form
-      } else {
+        setFormData({ name: '', email: '', subject: '', message: '' }); 
         const errorData = await response.json();
         setStatus('error');
         setErrorMessage(errorData.message || (currentLanguage === 'pt' ? 'Ocorreu um erro ao enviar a mensagem.' : 'An error occurred while sending the message.'));
