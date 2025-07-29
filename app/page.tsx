@@ -151,11 +151,11 @@ const Page = () => {
     const sectionNames: Record<string, SectionName> = {
       home: { pt: 'Home', en: 'Home' },
       about: { pt: 'Sobre', en: 'About' },
-      project: { pt: 'Projetos', en: 'Projects' },
+      project: { pt: 'Projectos', en: 'Projects' },
       experience: { pt: 'Experiência', en: 'Experience' },
       event: { pt: 'Eventos', en: 'Events' },
       certification: { pt: 'Certificados', en: 'Certifications' },
-      contact: { pt: 'Contato', en: 'Contact' },
+      contact: { pt: 'Contacto', en: 'Contact' },
     };
   
     // Usar Record<string, React.ElementType> para suportar indexação dinâmica
