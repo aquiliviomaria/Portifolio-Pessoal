@@ -1,7 +1,7 @@
 'use client';
-import React from 'react'; 
+import React from 'react';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion'; // Import AnimatePresence
 import {
   AiOutlineHome,
   AiOutlineUser,
@@ -41,25 +41,36 @@ import CertificationSection from './components/Certification';
 import ContactSection from './components/Contact';
 
 const Page = () => {
-  const [darkMode, setDarkMode] = useState(() => {
+  const [darkMode, setDarkMode] = useState<boolean>(() => {
+    // Initialize darkMode from localStorage or default to true (dark)
     if (typeof window !== 'undefined') {
       const savedMode = localStorage.getItem('darkMode');
-      return savedMode ? savedMode === 'true' : true;
+      // If 'darkMode' is explicitly 'false', return false. Otherwise, return true.
+      return savedMode === 'false' ? false : true;
     }
-    return true;
+    return true; // Default to dark mode on server or if window is undefined
   });
   const [activeSection, setActiveSection] = useState('home');
-  const [language, setLanguage] = useState<'pt' | 'en'>('pt'); 
+  const [language, setLanguage] = useState<'pt' | 'en'>('pt');
   const [displayedText, setDisplayedText] = useState('');
+  // isMobile will now be true for devices < 1024px (lg breakpoint)
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const fullName = '  Aquilívio Maria Cumbe ';
   const textDelay = 75;
 
+  // Use this useEffect to apply the class immediately on first render
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.classList.toggle('dark', darkMode);
+    }
+  }, []); // Empty dependency array means it runs once on mount
+
   useEffect(() => {
     const checkIfMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      // Set isMobile to true if window width is less than lg (1024px)
+      setIsMobile(window.innerWidth < 1024);
     };
 
     checkIfMobile();
@@ -69,8 +80,11 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', darkMode);
-    localStorage.setItem('darkMode', darkMode.toString());
+    // This useEffect handles changes to darkMode and persists it
+    if (typeof window !== 'undefined') {
+      document.documentElement.classList.toggle('dark', darkMode);
+      localStorage.setItem('darkMode', darkMode.toString());
+    }
   }, [darkMode]);
 
   useEffect(() => {
@@ -147,7 +161,7 @@ const Page = () => {
       pt: string;
       en: string;
     }
-  
+
     const sectionNames: Record<string, SectionName> = {
       home: { pt: 'Home', en: 'Home' },
       about: { pt: 'Sobre', en: 'About' },
@@ -157,8 +171,7 @@ const Page = () => {
       certification: { pt: 'Certificados', en: 'Certifications' },
       contact: { pt: 'Contacto', en: 'Contact' },
     };
-  
-    // Usar Record<string, React.ElementType> para suportar indexação dinâmica
+
     const icons: Record<string, React.ElementType> = {
       home: AiOutlineHome,
       about: AiOutlineUser,
@@ -168,13 +181,13 @@ const Page = () => {
       certification: AiOutlineBook,
       contact: AiOutlineMail,
     };
-  
+
     return (
       <header className="fixed w-full z-50 p-4 bg-transparent">
         <div className="max-w-7xl mx-auto flex justify-between items-center border border-gray-300 dark:border-gray-700 rounded-full px-3 py-2 md:px-4 md:py-3 backdrop-filter backdrop-blur-lg bg-opacity-30 dark:bg-opacity-30 bg-white dark:bg-gray-800 shadow-lg">
-          <div className="flex-1 flex justify-center items-center">
-            {/* Desktop Menu */}
-            <nav className="hidden md:flex space-x-4">
+          <div className="flex-1 flex justify-center items-center md:justify-start"> {/* Adjusted for better centering */}
+            {/* Desktop Menu - visible from lg breakpoint */}
+            <nav className="hidden lg:flex space-x-4">
               {Object.keys(sectionNames).map((section) => (
                 <motion.button
                   key={section}
@@ -201,18 +214,17 @@ const Page = () => {
                         : 'group-hover:animate-bounce'
                     }`}
                   >
-                    {/* Usar o componente diretamente com < > */}
                     {React.createElement(icons[section])}
                   </span>
-                  <span className="ml-2 text-base">
+                  <span className="ml-2 text-base whitespace-nowrap"> {/* Added whitespace-nowrap */}
                     {sectionNames[section][language]}
                   </span>
                 </motion.button>
               ))}
             </nav>
-            {/* Mobile Hamburger Icon */}
+            {/* Mobile Hamburger Icon - visible until lg breakpoint */}
             <motion.button
-              className="md:hidden text-2xl p-2"
+              className="lg:hidden text-2xl p-2"
               onClick={toggleMenu}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -221,54 +233,56 @@ const Page = () => {
               {isMenuOpen ? <FaTimes /> : <FaBars />}
             </motion.button>
           </div>
-  
-          {/* Mobile Menu */}
-          {isMenuOpen && (
-            <motion.nav
-              className="absolute top-full left-0 w-full mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg md:hidden"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="flex flex-col p-4 space-y-2">
-                {Object.keys(sectionNames).map((section) => (
-                  <motion.button
-                    key={section}
-                    onClick={() => {
-                      setActiveSection(section);
-                      setIsMenuOpen(false);
-                    }}
-                    whileHover={{ y: -4, scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className={`flex items-center p-3 rounded-lg transition-all group ${
-                      activeSection === section
-                        ? darkMode
-                          ? 'text-teal-400'
-                          : 'text-blue-600'
-                        : darkMode
-                          ? 'text-gray-400 hover:text-white'
-                          : 'text-gray-600 hover:text-gray-900'
-                    }`}
-                  >
-                    <span
-                      className={`text-2xl ${
+
+          {/* Mobile Menu - AnimatePresence for smooth exit */}
+          <AnimatePresence>
+            {isMenuOpen && (
+              <motion.nav
+                className="absolute top-full left-0 right-0 mx-auto w-11/12 max-w-sm mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg lg:hidden" // Adjusted width and max-width
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                <div className="flex flex-col p-4 space-y-2">
+                  {Object.keys(sectionNames).map((section) => (
+                    <motion.button
+                      key={section}
+                      onClick={() => {
+                        setActiveSection(section);
+                        setIsMenuOpen(false);
+                      }}
+                      whileHover={{ y: -4, scale: 1.05 }} // Slight adjustment for mobile hover
+                      whileTap={{ scale: 0.95 }} // Slight adjustment for mobile tap
+                      className={`flex items-center p-3 rounded-lg transition-all group ${
                         activeSection === section
-                          ? 'animate-pulse'
-                          : 'group-hover:animate-bounce'
+                          ? darkMode
+                            ? 'text-teal-400'
+                            : 'text-blue-600'
+                          : darkMode
+                            ? 'text-gray-400 hover:text-white'
+                            : 'text-gray-600 hover:text-gray-900'
                       }`}
                     >
-                      {React.createElement(icons[section])}
-                    </span>
-                    <span className="ml-2 text-sm">
-                      {sectionNames[section][language]}
-                    </span>
-                  </motion.button>
-                ))}
-              </div>
-            </motion.nav>
-          )}
-  
+                      <span
+                        className={`text-2xl ${
+                          activeSection === section
+                            ? 'animate-pulse'
+                            : 'group-hover:animate-bounce'
+                        }`}
+                      >
+                        {React.createElement(icons[section])}
+                      </span>
+                      <span className="ml-2 text-base"> {/* Changed to text-base for better readability on mobile/tablet */}
+                        {sectionNames[section][language]}
+                      </span>
+                    </motion.button>
+                  ))}
+                </div>
+              </motion.nav>
+            )}
+          </AnimatePresence>
+
           <div className="flex items-center space-x-2 md:space-x-4">
             <motion.button
               onClick={toggleDarkMode}
@@ -280,7 +294,7 @@ const Page = () => {
             >
               {darkMode ? <BsFillSunFill /> : <BsFillMoonFill />}
             </motion.button>
-  
+
             <label htmlFor="language-select" className="sr-only">
               Select language
             </label>

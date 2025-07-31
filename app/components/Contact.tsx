@@ -76,7 +76,8 @@ const ContactSection: React.FC<ContactSectionProps> = ({ darkMode, language }) =
 
       if (response.ok) {
         setStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' }); 
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
         const errorData = await response.json();
         setStatus('error');
         setErrorMessage(errorData.message || (currentLanguage === 'pt' ? 'Ocorreu um erro ao enviar a mensagem.' : 'An error occurred while sending the message.'));
@@ -198,26 +199,19 @@ const ContactSection: React.FC<ContactSectionProps> = ({ darkMode, language }) =
             ></textarea>
           </div>
 
-          {status === 'success' && (
-            <p className="text-green-500 text-center font-medium">
-              {currentLanguage === 'pt' ? 'Mensagem enviada com sucesso!' : 'Message sent successfully!'}
-            </p>
-          )}
-          {status === 'error' && (
-            <p className="text-red-500 text-center font-medium">
-              {errorMessage}
-            </p>
-          )}
-          {status === 'invalid-email' && (
-            <p className="text-red-500 text-center font-medium">
-              {errorMessage}
-            </p>
-          )}
-          {status === 'invalid-message' && (
-            <p className="text-red-500 text-center font-medium">
-              {errorMessage}
-            </p>
-          )}
+          {/* Status Messages */}
+          <div className="min-h-8">
+            {status === 'success' && (
+              <p className="text-green-500 text-center font-medium">
+                {currentLanguage === 'pt' ? 'Mensagem enviada com sucesso!' : 'Message sent successfully!'}
+              </p>
+            )}
+            {(status === 'error' || status === 'invalid-email' || status === 'invalid-message') && (
+              <p className="text-red-500 text-center font-medium">
+                {errorMessage}
+              </p>
+            )}
+          </div>
 
           <motion.button
             type="submit"

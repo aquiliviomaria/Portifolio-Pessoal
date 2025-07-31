@@ -1,4 +1,3 @@
-// app/components/Experience.tsx
 'use client';
 
 import React from 'react';
@@ -9,7 +8,7 @@ interface ExperienceItem {
   company: string;
   duration: string;
   description: string;
-  image?: string; // Optional path to an image related to the experience
+  image?: string; 
 }
 
 interface ExperienceSectionProps {

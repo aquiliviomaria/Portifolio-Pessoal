@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     // Environment variables
     const emailUser = process.env.EMAIL_USER;
     const emailPass = process.env.EMAIL_PASS;
-    const recipientEmail = 'aquiliviomaria@gmail.com'; // Your email for receiving messages
+    const recipientEmail = 'aquiliviomaria@gmail.com';
 
     console.log('DEBUG: EMAIL_USER:', emailUser ? 'DEFINIDO' : 'NÃO DEFINIDO');
     console.log('DEBUG: EMAIL_PASS:', emailPass ? 'DEFINIDO' : 'NÃO DEFINIDO');
