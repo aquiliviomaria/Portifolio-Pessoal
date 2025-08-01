@@ -48,13 +48,11 @@ import ContactSection from "./components/Contact";
 
 const Page = () => {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
-    // Inicializa darkMode a partir do localStorage
     if (typeof window !== "undefined") {
       const savedMode = localStorage.getItem("darkMode");
-      // Se houver uma preferência salva, use-a. Caso contrário, o padrão é true (dark mode).
       return savedMode !== null ? JSON.parse(savedMode) : true;
     }
-    return true; // Padrão para dark mode no servidor
+    return true;
   });
   const [activeSection, setActiveSection] = useState("home");
   const [language, setLanguage] = useState<"pt" | "en">("pt");
@@ -65,13 +63,11 @@ const Page = () => {
   const fullName = "  Aquilívio Maria Cumbe ";
   const textDelay = 75;
 
-  // Use this useEffect to apply the class immediately on first render
   useEffect(() => {
     if (typeof window !== "undefined") {
-      // Aplica a classe 'dark' com base no estado inicial do darkMode
       document.documentElement.classList.toggle("dark", darkMode);
     }
-  }, []); // Empty dependency array means it runs once on mount
+  }, []);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -87,7 +83,6 @@ const Page = () => {
   useEffect(() => {
     if (typeof window !== "undefined") {
       document.documentElement.classList.toggle("dark", darkMode);
-      // Persiste a preferência do usuário no localStorage
       localStorage.setItem("darkMode", JSON.stringify(darkMode));
     }
   }, [darkMode]);
@@ -322,6 +317,7 @@ const Page = () => {
       </header>
     );
   };
+
   const HomeSection = () => {
     const content = {
       pt: {

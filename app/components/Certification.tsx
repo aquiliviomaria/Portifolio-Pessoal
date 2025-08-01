@@ -104,7 +104,7 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
       id="certification"
       className={`py-20 px-6 ${
         darkMode ? "bg-gray-950 text-gray-100" : "bg-gray-50 text-gray-900"
-      } transition-colors duration-300 flex flex-col items-center`}
+      } transition-colors duration-300 flex flex-col`}
     >
       <motion.div
         className="max-w-4xl mx-auto w-full"
