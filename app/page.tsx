@@ -1,7 +1,7 @@
-'use client';
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion'; // Import AnimatePresence
+"use client";
+import React from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   AiOutlineHome,
   AiOutlineUser,
@@ -9,8 +9,13 @@ import {
   AiOutlineBook,
   AiOutlineCalendar,
   AiOutlineMail,
-} from 'react-icons/ai';
-import { BsFillSunFill, BsFillMoonFill, BsStars, BsDownload } from 'react-icons/bs';
+} from "react-icons/ai";
+import {
+  BsFillSunFill,
+  BsFillMoonFill,
+  BsStars,
+  BsDownload,
+} from "react-icons/bs";
 import {
   FaNetworkWired,
   FaShieldAlt,
@@ -21,7 +26,7 @@ import {
   FaTerminal,
   FaBars,
   FaTimes,
-} from 'react-icons/fa';
+} from "react-icons/fa";
 import {
   SiPython,
   SiLinux,
@@ -30,40 +35,40 @@ import {
   SiReact,
   SiNodedotjs,
   SiGit,
-} from 'react-icons/si';
-import { TbBinary, TbServer } from 'react-icons/tb';
+} from "react-icons/si";
+import { TbBinary, TbServer } from "react-icons/tb";
 
-import AboutSection from './components/About';
-import ProjectSection from './components/Project';
-import ExperienceSection from './components/Experience';
-import EventSection from './components/Event';
-import CertificationSection from './components/Certification';
-import ContactSection from './components/Contact';
+import AboutSection from "./components/About";
+import ProjectSection from "./components/Project";
+import ExperienceSection from "./components/Experience";
+import EventSection from "./components/Event";
+import CertificationSection from "./components/Certification";
+import ContactSection from "./components/Contact";
 
 const Page = () => {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
     // Initialize darkMode from localStorage or default to true (dark)
-    if (typeof window !== 'undefined') {
-      const savedMode = localStorage.getItem('darkMode');
+    if (typeof window !== "undefined") {
+      const savedMode = localStorage.getItem("darkMode");
       // If 'darkMode' is explicitly 'false', return false. Otherwise, return true.
-      return savedMode === 'false' ? false : true;
+      return savedMode === "false" ? false : true;
     }
     return true; // Default to dark mode on server or if window is undefined
   });
-  const [activeSection, setActiveSection] = useState('home');
-  const [language, setLanguage] = useState<'pt' | 'en'>('pt');
-  const [displayedText, setDisplayedText] = useState('');
+  const [activeSection, setActiveSection] = useState("home");
+  const [language, setLanguage] = useState<"pt" | "en">("pt");
+  const [displayedText, setDisplayedText] = useState("");
   // isMobile will now be true for devices < 1024px (lg breakpoint)
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const fullName = '  Aquilívio Maria Cumbe ';
+  const fullName = "  Aquilívio Maria Cumbe ";
   const textDelay = 75;
 
   // Use this useEffect to apply the class immediately on first render
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      document.documentElement.classList.toggle('dark', darkMode);
+    if (typeof window !== "undefined") {
+      document.documentElement.classList.toggle("dark", darkMode);
     }
   }, []); // Empty dependency array means it runs once on mount
 
@@ -74,21 +79,21 @@ const Page = () => {
     };
 
     checkIfMobile();
-    window.addEventListener('resize', checkIfMobile);
+    window.addEventListener("resize", checkIfMobile);
 
-    return () => window.removeEventListener('resize', checkIfMobile);
+    return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
 
   useEffect(() => {
     // This useEffect handles changes to darkMode and persists it
-    if (typeof window !== 'undefined') {
-      document.documentElement.classList.toggle('dark', darkMode);
-      localStorage.setItem('darkMode', darkMode.toString());
+    if (typeof window !== "undefined") {
+      document.documentElement.classList.toggle("dark", darkMode);
+      localStorage.setItem("darkMode", darkMode.toString());
     }
   }, [darkMode]);
 
   useEffect(() => {
-    setDisplayedText('');
+    setDisplayedText("");
     let i = 0;
     const typingInterval = setInterval(() => {
       setDisplayedText((prev) => prev + fullName.charAt(i));
@@ -106,19 +111,19 @@ const Page = () => {
 
   const FloatingIcons = () => {
     const icons = [
-      { icon: <FaNetworkWired />, color: 'text-blue-400' },
-      { icon: <FaShieldAlt />, color: 'text-green-400' },
-      { icon: <SiPython />, color: 'text-yellow-400' },
-      { icon: <TbBinary />, color: 'text-purple-400' },
-      { icon: <SiLinux />, color: 'text-blue-300' },
-      { icon: <TbServer />, color: 'text-teal-400' },
-      { icon: <SiDocker />, color: 'text-blue-500' },
-      { icon: <SiJavascript />, color: 'text-yellow-300' },
-      { icon: <SiReact />, color: 'text-cyan-400' },
-      { icon: <SiNodedotjs />, color: 'text-green-500' },
-      { icon: <SiGit />, color: 'text-orange-500' },
-      { icon: <FaCodeBranch />, color: 'text-pink-400' },
-      { icon: <FaTerminal />, color: 'text-lime-400' },
+      { icon: <FaNetworkWired />, color: "text-blue-400" },
+      { icon: <FaShieldAlt />, color: "text-green-400" },
+      { icon: <SiPython />, color: "text-yellow-400" },
+      { icon: <TbBinary />, color: "text-purple-400" },
+      { icon: <SiLinux />, color: "text-blue-300" },
+      { icon: <TbServer />, color: "text-teal-400" },
+      { icon: <SiDocker />, color: "text-blue-500" },
+      { icon: <SiJavascript />, color: "text-yellow-300" },
+      { icon: <SiReact />, color: "text-cyan-400" },
+      { icon: <SiNodedotjs />, color: "text-green-500" },
+      { icon: <SiGit />, color: "text-orange-500" },
+      { icon: <FaCodeBranch />, color: "text-pink-400" },
+      { icon: <FaTerminal />, color: "text-lime-400" },
     ];
 
     return (
@@ -140,8 +145,8 @@ const Page = () => {
             transition={{
               duration: Math.random() * 20 + 20,
               repeat: Infinity,
-              repeatType: 'reverse',
-              ease: 'linear',
+              repeatType: "reverse",
+              ease: "linear",
             }}
             className={`absolute text-3xl ${item.color}`}
             style={{
@@ -163,13 +168,13 @@ const Page = () => {
     }
 
     const sectionNames: Record<string, SectionName> = {
-      home: { pt: 'Home', en: 'Home' },
-      about: { pt: 'Sobre', en: 'About' },
-      project: { pt: 'Projectos', en: 'Projects' },
-      experience: { pt: 'Experiência', en: 'Experience' },
-      event: { pt: 'Eventos', en: 'Events' },
-      certification: { pt: 'Certificados', en: 'Certifications' },
-      contact: { pt: 'Contacto', en: 'Contact' },
+      home: { pt: "Home", en: "Home" },
+      about: { pt: "Sobre", en: "About" },
+      project: { pt: "Projectos", en: "Projects" },
+      experience: { pt: "Experiência", en: "Experience" },
+      event: { pt: "Eventos", en: "Events" },
+      certification: { pt: "Certificados", en: "Certifications" },
+      contact: { pt: "Contacto", en: "Contact" },
     };
 
     const icons: Record<string, React.ElementType> = {
@@ -185,60 +190,59 @@ const Page = () => {
     return (
       <header className="fixed w-full z-50 p-4 bg-transparent">
         <div className="max-w-7xl mx-auto flex justify-between items-center border border-gray-300 dark:border-gray-700 rounded-full px-3 py-2 md:px-4 md:py-3 backdrop-filter backdrop-blur-lg bg-opacity-30 dark:bg-opacity-30 bg-white dark:bg-gray-800 shadow-lg">
-          <div className="flex-1 flex justify-center items-center md:justify-start"> {/* Adjusted for better centering */}
-            {/* Desktop Menu - visible from lg breakpoint */}
-            <nav className="hidden lg:flex space-x-4">
-              {Object.keys(sectionNames).map((section) => (
-                <motion.button
-                  key={section}
-                  onClick={() => {
-                    setActiveSection(section);
-                    setIsMenuOpen(false);
-                  }}
-                  whileHover={{ y: -4, scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  className={`relative flex items-center p-3 rounded-lg transition-all group ${
+          {/* Mobile Menu Icon (Hamburger) - visible on small screens */}
+          <motion.button
+            className="lg:hidden text-2xl p-2"
+            onClick={toggleMenu}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            aria-label={isMenuOpen ? "Close Menu" : "Open Menu"}
+          >
+            {isMenuOpen ? <FaTimes /> : <FaBars />}
+          </motion.button>
+
+          {/* Desktop Menu - visible from lg breakpoint */}
+          <nav className="hidden lg:flex flex-1 justify-center space-x-4">
+            {Object.keys(sectionNames).map((section) => (
+              <motion.button
+                key={section}
+                onClick={() => {
+                  setActiveSection(section);
+                  setIsMenuOpen(false);
+                }}
+                whileHover={{ y: -4, scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                className={`relative flex items-center p-3 rounded-lg transition-all group ${
+                  activeSection === section
+                    ? darkMode
+                      ? "text-teal-400"
+                      : "text-blue-600"
+                    : darkMode
+                    ? "text-gray-400 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                }`}
+              >
+                <span
+                  className={`text-3xl ${
                     activeSection === section
-                      ? darkMode
-                        ? 'text-teal-400'
-                        : 'text-blue-600'
-                      : darkMode
-                      ? 'text-gray-400 hover:text-white'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? "animate-pulse"
+                      : "group-hover:animate-bounce"
                   }`}
                 >
-                  <span
-                    className={`text-3xl ${
-                      activeSection === section
-                        ? 'animate-pulse'
-                        : 'group-hover:animate-bounce'
-                    }`}
-                  >
-                    {React.createElement(icons[section])}
-                  </span>
-                  <span className="ml-2 text-base whitespace-nowrap"> {/* Added whitespace-nowrap */}
-                    {sectionNames[section][language]}
-                  </span>
-                </motion.button>
-              ))}
-            </nav>
-            {/* Mobile Hamburger Icon - visible until lg breakpoint */}
-            <motion.button
-              className="lg:hidden text-2xl p-2"
-              onClick={toggleMenu}
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              aria-label={isMenuOpen ? 'Close Menu' : 'Open Menu'}
-            >
-              {isMenuOpen ? <FaTimes /> : <FaBars />}
-            </motion.button>
-          </div>
+                  {React.createElement(icons[section])}
+                </span>
+                <span className="ml-2 text-base whitespace-nowrap">
+                  {sectionNames[section][language]}
+                </span>
+              </motion.button>
+            ))}
+          </nav>
 
-          {/* Mobile Menu - AnimatePresence for smooth exit */}
+          {/* Mobile Menu (dropdown) - AnimatePresence for smooth exit */}
           <AnimatePresence>
             {isMenuOpen && (
               <motion.nav
-                className="absolute top-full left-0 right-0 mx-auto w-11/12 max-w-sm mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg lg:hidden" // Adjusted width and max-width
+                className="absolute top-full left-0 right-0 mx-auto w-11/12 max-w-sm mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg lg:hidden"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
@@ -252,28 +256,28 @@ const Page = () => {
                         setActiveSection(section);
                         setIsMenuOpen(false);
                       }}
-                      whileHover={{ y: -4, scale: 1.05 }} // Slight adjustment for mobile hover
-                      whileTap={{ scale: 0.95 }} // Slight adjustment for mobile tap
+                      whileHover={{ y: -4, scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
                       className={`flex items-center p-3 rounded-lg transition-all group ${
                         activeSection === section
                           ? darkMode
-                            ? 'text-teal-400'
-                            : 'text-blue-600'
+                            ? "text-teal-400"
+                            : "text-blue-600"
                           : darkMode
-                            ? 'text-gray-400 hover:text-white'
-                            : 'text-gray-600 hover:text-gray-900'
+                          ? "text-gray-400 hover:text-white"
+                          : "text-gray-600 hover:text-gray-900"
                       }`}
                     >
                       <span
                         className={`text-2xl ${
                           activeSection === section
-                            ? 'animate-pulse'
-                            : 'group-hover:animate-bounce'
+                            ? "animate-pulse"
+                            : "group-hover:animate-bounce"
                         }`}
                       >
                         {React.createElement(icons[section])}
                       </span>
-                      <span className="ml-2 text-base"> {/* Changed to text-base for better readability on mobile/tablet */}
+                      <span className="ml-2 text-base">
                         {sectionNames[section][language]}
                       </span>
                     </motion.button>
@@ -283,14 +287,16 @@ const Page = () => {
             )}
           </AnimatePresence>
 
+          {/* Right side controls (theme toggle, language select) */}
           <div className="flex items-center space-x-2 md:space-x-4">
             <motion.button
               onClick={toggleDarkMode}
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               className={`p-2 text-2xl md:text-3xl ${
-                darkMode ? 'text-yellow-400' : 'text-gray-700'
+                darkMode ? "text-yellow-400" : "text-gray-700"
               }`}
+              aria-label="Toggle dark mode"
             >
               {darkMode ? <BsFillSunFill /> : <BsFillMoonFill />}
             </motion.button>
@@ -301,11 +307,11 @@ const Page = () => {
             <select
               id="language-select"
               value={language}
-              onChange={(e) => setLanguage(e.target.value as 'pt' | 'en')}
+              onChange={(e) => setLanguage(e.target.value as "pt" | "en")}
               className={`p-1 rounded-full bg-transparent border text-sm md:text-base ${
                 darkMode
-                  ? 'text-white border-gray-600'
-                  : 'text-gray-700 border-gray-300'
+                  ? "text-white border-gray-600"
+                  : "text-gray-700 border-gray-300"
               }`}
             >
               <option value="pt">PT</option>
@@ -319,36 +325,41 @@ const Page = () => {
   const HomeSection = () => {
     const content = {
       pt: {
-        welcome: '👋 Olá, eu sou',
+        welcome: "👋 Olá, eu sou",
         description:
-          'Meu trabalho é criar soluções que não só funcionam, mas que também encantam e inspiram.',
-        skills: 'Habilidades:',
-        roles: ['Desenvolvedor', 'Pentester', 'Engenheiro de Redes', 'Freelancer'],
-        cta: 'Explorar Projetos',
-        downloadCv: 'Baixar CV',
+          "Meu trabalho é criar soluções que não só funcionam, mas que também encantam e inspiram.",
+        skills: "Habilidades:",
+        roles: [
+          "Desenvolvedor",
+          "Pentester",
+          "Engenheiro de Redes",
+          "Freelancer",
+        ],
+        cta: "Explorar Projetos",
+        downloadCv: "Baixar CV",
       },
       en: {
-        welcome: '👋 Hello, I am',
+        welcome: "👋 Hello, I am",
         description:
-          'My work is about crafting solutions that not only function, but also delight and inspire.',
-        skills: 'Skills:',
-        roles: ['Developer', 'Pentester', 'Network Engineer', 'Freelancer'],
-        cta: 'Explore Projects',
-        downloadCv: 'Download CV',
+          "My work is about crafting solutions that not only function, but also delight and inspire.",
+        skills: "Skills:",
+        roles: ["Developer", "Pentester", "Network Engineer", "Freelancer"],
+        cta: "Explore Projects",
+        downloadCv: "Download CV",
       },
     };
 
     const roles = content[language].roles;
     const roleShadows = [
-      'shadow-[0_0_20px_rgba(59,130,246,0.6)]',
-      'shadow-[0_0_20px_rgba(239,68,68,0.6)]',
-      'shadow-[0_0_20px_rgba(16,185,129,0.6)]',
-      'shadow-[0_0_20px_rgba(168,85,247,0.6)]',
+      "shadow-[0_0_20px_rgba(59,130,246,0.6)]",
+      "shadow-[0_0_20px_rgba(239,68,68,0.6)]",
+      "shadow-[0_0_20px_rgba(16,185,129,0.6)]",
+      "shadow-[0_0_20px_rgba(168,85,247,0.6)]",
     ];
 
     const handleDownloadCV = () => {
-      const cvPath = '/docs/Aquilivio_Maria_Cumbe_CV.pdf';
-      const link = document.createElement('a');
+      const cvPath = "/docs/Aquilivio_Maria_Cumbe_CV.pdf";
+      const link = document.createElement("a");
       link.href = cvPath;
       link.download = `Aquilivio_Maria_Cumbe_CV_${language.toUpperCase()}.pdf`;
       document.body.appendChild(link);
@@ -357,7 +368,9 @@ const Page = () => {
     };
 
     return (
-      <section className={`relative min-h-screen flex items-center justify-center`}>
+      <section
+        className={`relative min-h-screen flex items-center justify-center`}
+      >
         <FloatingIcons />
 
         <div className="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center justify-center relative z-10 gap-8 md:gap-12">
@@ -365,7 +378,7 @@ const Page = () => {
           <div className="text-center md:text-left max-w-2xl order-2 md:order-1">
             <h1
               className={`text-4xl md:text-5xl font-bold mb-4 ${
-                darkMode ? 'text-white' : 'text-gray-900'
+                darkMode ? "text-white" : "text-gray-900"
               }`}
             >
               {content[language].welcome}
@@ -373,14 +386,18 @@ const Page = () => {
 
             <h2
               className={`text-2xl sm:text-3xl md:text-4xl font-bold mb-6 ${
-                darkMode ? 'text-teal-400' : 'text-blue-600'
+                darkMode ? "text-teal-400" : "text-blue-600"
               }`}
             >
               {displayedText}
               <motion.span
                 className="inline-block"
                 animate={{ opacity: [0, 1, 0] }}
-                transition={{ duration: 0.8, repeat: Infinity, ease: 'easeInOut' }}
+                transition={{
+                  duration: 0.8,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
               >
                 |
               </motion.span>
@@ -388,7 +405,7 @@ const Page = () => {
 
             <p
               className={`text-lg md:text-xl mb-8 ${
-                darkMode ? 'text-gray-300' : 'text-gray-600'
+                darkMode ? "text-gray-300" : "text-gray-600"
               }`}
             >
               {content[language].description}
@@ -396,7 +413,7 @@ const Page = () => {
 
             <h3
               className={`text-2xl font-semibold mb-4 ${
-                darkMode ? 'text-white' : 'text-gray-800'
+                darkMode ? "text-white" : "text-gray-800"
               }`}
             >
               {content[language].skills}
@@ -409,8 +426,12 @@ const Page = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 * index, duration: 0.5 }}
                   className={`px-4 py-2 rounded-lg font-medium text-sm md:text-base ${
-                    darkMode ? 'bg-gray-800 text-white' : 'bg-white text-gray-800'
-                  } ${roleShadows[index]} transition-shadow duration-300 ease-in-out hover:shadow-[0_0_30px_rgba(0,255,255,0.8)]`}
+                    darkMode
+                      ? "bg-gray-800 text-white"
+                      : "bg-white text-gray-800"
+                  } ${
+                    roleShadows[index]
+                  } transition-shadow duration-300 ease-in-out hover:shadow-[0_0_30px_rgba(0,255,255,0.8)]`}
                 >
                   {role}
                 </motion.div>
@@ -420,9 +441,11 @@ const Page = () => {
             <div className="flex flex-col sm:flex-row justify-center md:justify-start gap-4">
               <motion.a
                 href="#project"
-                onClick={() => setActiveSection('project')}
+                onClick={() => setActiveSection("project")}
                 className={`inline-flex items-center justify-center px-6 py-3 rounded-lg text-lg font-semibold ${
-                  darkMode ? 'bg-teal-600 hover:bg-teal-700' : 'bg-blue-600 hover:bg-blue-700'
+                  darkMode
+                    ? "bg-teal-600 hover:bg-teal-700"
+                    : "bg-blue-600 hover:bg-blue-700"
                 } text-white`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -434,8 +457,10 @@ const Page = () => {
               <motion.button
                 onClick={handleDownloadCV}
                 className={`inline-flex items-center justify-center px-6 py-3 rounded-lg text-lg font-semibold ${
-                  darkMode ? 'bg-gray-700 hover:bg-gray-600' : 'bg-gray-200 hover:bg-gray-300'
-                } ${darkMode ? 'text-white' : 'text-gray-800'}`}
+                  darkMode
+                    ? "bg-gray-700 hover:bg-gray-600"
+                    : "bg-gray-200 hover:bg-gray-300"
+                } ${darkMode ? "text-white" : "text-gray-800"}`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -447,11 +472,23 @@ const Page = () => {
 
           {/* Photo - positioned right on desktop, below content on mobile */}
           <motion.div
-            className={`${isMobile ? 'w-40 h-40 mt-8 order-1' : 'w-64 h-64 lg:w-80 lg:h-80 md:ml-12 order-2'} rounded-full overflow-hidden shadow-2xl`}
-            initial={{ opacity: 0, scale: 0.8, y: isMobile ? 50 : 0, x: isMobile ? 0 : 50 }}
+            className={`${
+              isMobile
+                ? "w-40 h-40 mt-8 order-1"
+                : "w-64 h-64 lg:w-80 lg:h-80 md:ml-12 order-2"
+            } rounded-full overflow-hidden shadow-2xl`}
+            initial={{
+              opacity: 0,
+              scale: 0.8,
+              y: isMobile ? 50 : 0,
+              x: isMobile ? 0 : 50,
+            }}
             animate={{ opacity: 1, scale: 1, y: 0, x: 0 }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            whileHover={{ scale: 1.05, boxShadow: '0 0 40px rgba(0,255,255,0.7)' }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            whileHover={{
+              scale: 1.05,
+              boxShadow: "0 0 40px rgba(0,255,255,0.7)",
+            }}
           >
             <img
               src="/images/aquilivio-photo.jpg"
@@ -468,7 +505,11 @@ const Page = () => {
     return (
       <footer className="py-6 bg-transparent">
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center border-t border-gray-300 dark:border-gray-700 pt-4">
-          <div className={`mb-4 md:mb-0 ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <div
+            className={`mb-4 md:mb-0 ${
+              darkMode ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
             <p>&copy; {new Date().getFullYear()} Aquilívio Maria Cumbe</p>
           </div>
           <div className="flex space-x-6 text-2xl">
@@ -478,8 +519,8 @@ const Page = () => {
               rel="noopener noreferrer"
               className={
                 darkMode
-                  ? 'text-gray-400 hover:text-teal-400'
-                  : 'text-gray-600 hover:text-blue-600'
+                  ? "text-gray-400 hover:text-teal-400"
+                  : "text-gray-600 hover:text-blue-600"
               }
               aria-label="WhatsApp"
             >
@@ -491,8 +532,8 @@ const Page = () => {
               rel="noopener noreferrer"
               className={
                 darkMode
-                  ? 'text-gray-400 hover:text-teal-400'
-                  : 'text-gray-600 hover:text-blue-600'
+                  ? "text-gray-400 hover:text-teal-400"
+                  : "text-gray-600 hover:text-blue-600"
               }
               aria-label="LinkedIn"
             >
@@ -504,8 +545,8 @@ const Page = () => {
               rel="noopener noreferrer"
               className={
                 darkMode
-                  ? 'text-gray-400 hover:text-teal-400'
-                  : 'text-gray-600 hover:text-blue-600'
+                  ? "text-gray-400 hover:text-teal-400"
+                  : "text-gray-600 hover:text-blue-600"
               }
               aria-label="GitHub"
             >
@@ -520,18 +561,30 @@ const Page = () => {
   return (
     <div
       className={`min-h-screen ${
-        darkMode ? 'bg-gray-950 text-gray-100' : 'bg-gray-50 text-gray-900'
+        darkMode ? "bg-gray-950 text-gray-100" : "bg-gray-50 text-gray-900"
       } relative`}
     >
       <Header />
       <div className="pt-20">
-        {activeSection === 'home' && <HomeSection />}
-        {activeSection === 'about' && <AboutSection darkMode={darkMode} language={language} />}
-        {activeSection === 'project' && <ProjectSection darkMode={darkMode} language={language} />}
-        {activeSection === 'experience' && <ExperienceSection darkMode={darkMode} language={language} />}
-        {activeSection === 'event' && <EventSection darkMode={darkMode} language={language} />}
-        {activeSection === 'certification' && <CertificationSection darkMode={darkMode} language={language} />}
-        {activeSection === 'contact' && <ContactSection darkMode={darkMode} language={language} />}
+        {activeSection === "home" && <HomeSection />}
+        {activeSection === "about" && (
+          <AboutSection darkMode={darkMode} language={language} />
+        )}
+        {activeSection === "project" && (
+          <ProjectSection darkMode={darkMode} language={language} />
+        )}
+        {activeSection === "experience" && (
+          <ExperienceSection darkMode={darkMode} language={language} />
+        )}
+        {activeSection === "event" && (
+          <EventSection darkMode={darkMode} language={language} />
+        )}
+        {activeSection === "certification" && (
+          <CertificationSection darkMode={darkMode} language={language} />
+        )}
+        {activeSection === "contact" && (
+          <ContactSection darkMode={darkMode} language={language} />
+        )}
       </div>
       <Footer />
     </div>
