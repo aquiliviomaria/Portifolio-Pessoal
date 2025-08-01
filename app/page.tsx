@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -47,18 +48,17 @@ import ContactSection from "./components/Contact";
 
 const Page = () => {
   const [darkMode, setDarkMode] = useState<boolean>(() => {
-    // Initialize darkMode from localStorage or default to true (dark)
+    // Inicializa darkMode a partir do localStorage
     if (typeof window !== "undefined") {
       const savedMode = localStorage.getItem("darkMode");
-      // If 'darkMode' is explicitly 'false', return false. Otherwise, return true.
-      return savedMode === "false" ? false : true;
+      // Se houver uma preferência salva, use-a. Caso contrário, o padrão é true (dark mode).
+      return savedMode !== null ? JSON.parse(savedMode) : true;
     }
-    return true; // Default to dark mode on server or if window is undefined
+    return true; // Padrão para dark mode no servidor
   });
   const [activeSection, setActiveSection] = useState("home");
   const [language, setLanguage] = useState<"pt" | "en">("pt");
   const [displayedText, setDisplayedText] = useState("");
-  // isMobile will now be true for devices < 1024px (lg breakpoint)
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -68,13 +68,13 @@ const Page = () => {
   // Use this useEffect to apply the class immediately on first render
   useEffect(() => {
     if (typeof window !== "undefined") {
+      // Aplica a classe 'dark' com base no estado inicial do darkMode
       document.documentElement.classList.toggle("dark", darkMode);
     }
   }, []); // Empty dependency array means it runs once on mount
 
   useEffect(() => {
     const checkIfMobile = () => {
-      // Set isMobile to true if window width is less than lg (1024px)
       setIsMobile(window.innerWidth < 1024);
     };
 
@@ -85,10 +85,10 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    // This useEffect handles changes to darkMode and persists it
     if (typeof window !== "undefined") {
       document.documentElement.classList.toggle("dark", darkMode);
-      localStorage.setItem("darkMode", darkMode.toString());
+      // Persiste a preferência do usuário no localStorage
+      localStorage.setItem("darkMode", JSON.stringify(darkMode));
     }
   }, [darkMode]);
 

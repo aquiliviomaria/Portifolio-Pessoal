@@ -118,9 +118,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   return (
     <section
       id="experience"
-      className={`min-h-screen py-20 px-6 ${
+      className={`py-20 px-6 ${
         darkMode ? "bg-gray-950 text-gray-100" : "bg-gray-50 text-gray-900"
-      } transition-colors duration-300 flex flex-col items-center justify-center`}
+      } transition-colors duration-300 flex flex-col items-center`}
     >
       <motion.div
         className="max-w-4xl mx-auto w-full"
@@ -153,7 +153,7 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
                   className="w-24 h-24 object-cover rounded-md sm:rounded-lg mr-0 sm:mr-4 mb-4 sm:mb-0 flex-shrink-0 self-center"
                 />
               )}
-              <div className="flex-grow text-center sm:text-left">
+              <div className="flex-grow text-left">
                 <h3
                   className={`text-xl font-semibold mb-1 ${
                     darkMode ? "text-white" : "text-gray-900"
