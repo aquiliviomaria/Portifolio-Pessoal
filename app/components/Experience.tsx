@@ -1,7 +1,8 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
 
 interface ExperienceItem {
   title: string;
@@ -21,6 +22,17 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   language,
 }) => {
   const currentLanguage = language ?? "pt";
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  React.useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
 
   const experiences: ExperienceItem[] = [
     {
@@ -124,9 +136,9 @@ const ExperienceSection: React.FC<ExperienceSectionProps> = ({
     >
       <motion.div
         className="max-w-4xl mx-auto w-full"
+        ref={ref}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        animate={controls}
         variants={sectionVariants}
       >
         <h2

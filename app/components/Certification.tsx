@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
-import { motion } from "framer-motion";
-import { FaExternalLinkAlt, FaDownload } from "react-icons/fa";
+import { motion, useAnimation } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import { FaExternalLinkAlt, FaEye } from "react-icons/fa";
 
 interface Certificate {
   title: string;
@@ -11,7 +12,7 @@ interface Certificate {
   expiryDate?: string;
   credentialLink?: string;
   image?: string;
-  downloadLink?: string;
+  previewLink?: string;
 }
 
 interface CertificationSectionProps {
@@ -24,6 +25,17 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
   language,
 }) => {
   const currentLanguage = language ?? "pt";
+  const controls = useAnimation();
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
+
+  React.useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
 
   const certificates: Certificate[] = [
     {
@@ -32,7 +44,7 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
       issueDate: "jul de 2025",
       credentialLink:
         "https://www.credly.com/badges/your-cisco-credential-link",
-      downloadLink: "/certificates/cisco-cybersecurity.pdf",
+      previewLink: "/certificates/cisco-cybersecurity.pdf",
       image: "/images/cisco-cybersecurity.png",
     },
     {
@@ -40,14 +52,14 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
       issuer: "Django Girls Moçambique",
       issueDate: "mar de 2025",
       expiryDate: "mar de 2025",
-      downloadLink: "/certificates/django-girls-maxixe.pdf",
+      previewLink: "/certificates/django-girls-maxixe.pdf",
       image: "/images/django-girls-maxixe.png",
     },
     {
       title: "Imersão Cloud DevOps com o Google",
       issuer: "Alura",
       issueDate: "jul de 2025",
-      downloadLink: "/certificates/alura-cloud-devops.pdf",
+      previewLink: "/certificates/alura-cloud-devops.pdf",
       image: "/images/alura-cloud-devops.png",
     },
     {
@@ -56,23 +68,22 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
       issuer: "MozDevz",
       issueDate: "mai de 2025",
       expiryDate: "mai de 2025",
-      downloadLink: "/certificates/mozdevz-mentor-web-dev.pdf",
+      previewLink: "/certificates/mozdevz-mentor-web-dev.pdf",
       image: "/images/mozdevz-mentor-web-dev.png",
     },
     {
       title: "Bootcamp de Programação em Python",
       issuer: "MozDevz",
       issueDate: "nov de 2024",
-      downloadLink: "/certificates/mozdevz-python-bootcamp.pdf",
+      previewLink: "/certificates/mozdevz-python-bootcamp.pdf",
       image: "/images/mozdevz-python-bootcamp.png",
     },
   ];
 
   const sectionVariants = {
-    hidden: { opacity: 0, y: 50 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
         duration: 0.8,
         ease: "easeOut" as const,
@@ -82,21 +93,16 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, x: -50 },
+    hidden: { opacity: 0, y: 30 },
     visible: {
       opacity: 1,
-      x: 0,
-      transition: { duration: 0.5, ease: "easeOut" as const },
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut" as const },
     },
   };
 
-  const handleDownload = (downloadLink: string, title: string) => {
-    const link = document.createElement("a");
-    link.href = downloadLink;
-    link.download = `${title.replace(/\s+/g, "-").toLowerCase()}.pdf`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const openPreview = (previewLink: string) => {
+    window.open(previewLink, "_blank");
   };
 
   return (
@@ -108,20 +114,21 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
     >
       <motion.div
         className="max-w-4xl mx-auto w-full"
+        ref={ref}
         initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, amount: 0.3 }}
+        animate={controls}
         variants={sectionVariants}
       >
-        <h2
+        <motion.h2
           className={`text-4xl md:text-5xl font-bold text-center mb-12 ${
             darkMode ? "text-teal-400" : "text-blue-600"
           }`}
+          variants={itemVariants}
         >
           {currentLanguage === "pt"
             ? "Licenças e Certificados"
             : "Licenses & Certifications"}
-        </h2>
+        </motion.h2>
 
         <div className="space-y-8">
           {certificates.map((cert, index) => (
@@ -198,11 +205,9 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
                       </span>
                     </motion.a>
                   )}
-                  {cert.downloadLink && (
+                  {cert.previewLink && (
                     <motion.button
-                      onClick={() =>
-                        handleDownload(cert.downloadLink!, cert.title)
-                      }
+                      onClick={() => openPreview(cert.previewLink!)}
                       className={`inline-flex items-center space-x-2 px-4 py-2 rounded-md font-medium text-sm
                                    ${
                                      darkMode
@@ -213,11 +218,11 @@ const CertificationSection: React.FC<CertificationSectionProps> = ({
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      <FaDownload className="text-sm" />
+                      <FaEye className="text-sm" />
                       <span>
                         {currentLanguage === "pt"
-                          ? "Baixar certificado"
-                          : "Download certificate"}
+                          ? "Visualizar certificado"
+                          : "View certificate"}
                       </span>
                     </motion.button>
                   )}

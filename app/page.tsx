@@ -47,27 +47,34 @@ import CertificationSection from "./components/Certification";
 import ContactSection from "./components/Contact";
 
 const Page = () => {
-  const [darkMode, setDarkMode] = useState<boolean>(() => {
-    if (typeof window !== "undefined") {
-      const savedMode = localStorage.getItem("darkMode");
-      return savedMode !== null ? JSON.parse(savedMode) : true;
-    }
-    return true;
-  });
+  const [darkMode, setDarkMode] = useState<boolean>(true); // Always start with dark mode
   const [activeSection, setActiveSection] = useState("home");
   const [language, setLanguage] = useState<"pt" | "en">("pt");
   const [displayedText, setDisplayedText] = useState("");
   const [isMobile, setIsMobile] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
   const fullName = "  Aquilívio Maria Cumbe ";
   const textDelay = 75;
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      document.documentElement.classList.toggle("dark", darkMode);
+    setIsMounted(true);
+    // Check for user preference only after component mounts
+    const savedMode = localStorage.getItem("darkMode");
+    if (savedMode !== null) {
+      setDarkMode(JSON.parse(savedMode));
     }
+    // Apply theme immediately
+    document.documentElement.classList.toggle("dark", darkMode);
   }, []);
+
+  useEffect(() => {
+    if (isMounted) {
+      document.documentElement.classList.toggle("dark", darkMode);
+      localStorage.setItem("darkMode", JSON.stringify(darkMode));
+    }
+  }, [darkMode, isMounted]);
 
   useEffect(() => {
     const checkIfMobile = () => {
@@ -79,13 +86,6 @@ const Page = () => {
 
     return () => window.removeEventListener("resize", checkIfMobile);
   }, []);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      document.documentElement.classList.toggle("dark", darkMode);
-      localStorage.setItem("darkMode", JSON.stringify(darkMode));
-    }
-  }, [darkMode]);
 
   useEffect(() => {
     setDisplayedText("");
@@ -101,7 +101,13 @@ const Page = () => {
     return () => clearInterval(typingInterval);
   }, [language, fullName]);
 
-  const toggleDarkMode = () => setDarkMode(!darkMode);
+  const toggleDarkMode = () => {
+    const newMode = !darkMode;
+    setDarkMode(newMode);
+    document.documentElement.classList.toggle("dark", newMode);
+    localStorage.setItem("darkMode", JSON.stringify(newMode));
+  };
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const FloatingIcons = () => {
@@ -185,7 +191,6 @@ const Page = () => {
     return (
       <header className="fixed w-full z-50 p-4 bg-transparent">
         <div className="max-w-7xl mx-auto flex justify-between items-center border border-gray-300 dark:border-gray-700 rounded-full px-3 py-2 md:px-4 md:py-3 backdrop-filter backdrop-blur-lg bg-opacity-30 dark:bg-opacity-30 bg-white dark:bg-gray-800 shadow-lg">
-          {/* Mobile Menu Icon (Hamburger) - visible on small screens */}
           <motion.button
             className="lg:hidden text-2xl p-2"
             onClick={toggleMenu}
@@ -196,7 +201,6 @@ const Page = () => {
             {isMenuOpen ? <FaTimes /> : <FaBars />}
           </motion.button>
 
-          {/* Desktop Menu - visible from lg breakpoint */}
           <nav className="hidden lg:flex flex-1 justify-center space-x-4">
             {Object.keys(sectionNames).map((section) => (
               <motion.button
@@ -233,7 +237,6 @@ const Page = () => {
             ))}
           </nav>
 
-          {/* Mobile Menu (dropdown) - AnimatePresence for smooth exit */}
           <AnimatePresence>
             {isMenuOpen && (
               <motion.nav
@@ -282,7 +285,6 @@ const Page = () => {
             )}
           </AnimatePresence>
 
-          {/* Right side controls (theme toggle, language select) */}
           <div className="flex items-center space-x-2 md:space-x-4">
             <motion.button
               onClick={toggleDarkMode}
@@ -370,7 +372,6 @@ const Page = () => {
         <FloatingIcons />
 
         <div className="max-w-7xl mx-auto px-6 py-20 flex flex-col md:flex-row items-center justify-center relative z-10 gap-8 md:gap-12">
-          {/* Content - positioned left on desktop, above photo on mobile */}
           <div className="text-center md:text-left max-w-2xl order-2 md:order-1">
             <h1
               className={`text-4xl md:text-5xl font-bold mb-4 ${
@@ -466,7 +467,6 @@ const Page = () => {
             </div>
           </div>
 
-          {/* Photo - positioned right on desktop, below content on mobile */}
           <motion.div
             className={`${
               isMobile
@@ -555,34 +555,32 @@ const Page = () => {
   };
 
   return (
-    <div
-      className={`min-h-screen ${
-        darkMode ? "bg-gray-950 text-gray-100" : "bg-gray-50 text-gray-900"
-      } relative`}
-    >
-      <Header />
-      <div className="pt-20">
-        {activeSection === "home" && <HomeSection />}
-        {activeSection === "about" && (
-          <AboutSection darkMode={darkMode} language={language} />
-        )}
-        {activeSection === "project" && (
-          <ProjectSection darkMode={darkMode} language={language} />
-        )}
-        {activeSection === "experience" && (
-          <ExperienceSection darkMode={darkMode} language={language} />
-        )}
-        {activeSection === "event" && (
-          <EventSection darkMode={darkMode} language={language} />
-        )}
-        {activeSection === "certification" && (
-          <CertificationSection darkMode={darkMode} language={language} />
-        )}
-        {activeSection === "contact" && (
-          <ContactSection darkMode={darkMode} language={language} />
-        )}
+    <div className={`min-h-screen ${darkMode ? "dark" : ""}`}>
+      <div className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-950 dark:text-gray-100 relative transition-colors duration-300">
+        <Header />
+        <div className="pt-20">
+          {activeSection === "home" && <HomeSection />}
+          {activeSection === "about" && (
+            <AboutSection darkMode={darkMode} language={language} />
+          )}
+          {activeSection === "project" && (
+            <ProjectSection darkMode={darkMode} language={language} />
+          )}
+          {activeSection === "experience" && (
+            <ExperienceSection darkMode={darkMode} language={language} />
+          )}
+          {activeSection === "event" && (
+            <EventSection darkMode={darkMode} language={language} />
+          )}
+          {activeSection === "certification" && (
+            <CertificationSection darkMode={darkMode} language={language} />
+          )}
+          {activeSection === "contact" && (
+            <ContactSection darkMode={darkMode} language={language} />
+          )}
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </div>
   );
 };
